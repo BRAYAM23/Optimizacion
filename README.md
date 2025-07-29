@@ -9,6 +9,31 @@
 - del /q /f /s %TEMP%\*
 ### limpiar otras carpetas temporales:
 - del /q /f /s C:\Windows\Temp\*
+# Comandos de optimización de rendimiento general (CMD ADMIN)
+### Desactiva hibernación y libera espacio en disco.
+- powercfg -h off
+### Estabiliza el reloj del sistema, mejora latencia en algunos casos.
+- bcdedit /set useplatformclock true
+### Desactiva ticks dinámicos, mejora estabilidad y latencia.
+- bcdedit /set disabledynamictick yes
+### Fuerza el uso del reloj de hardware, útil para gaming/latencia.
+- bcdedit /set useplatformtick yes
+### Configura limpieza profunda del disco.
+- cleanmgr /sageset:1
+### Ejecuta limpieza configurada arriba.
+- cleanmgr /sagerun:1
+### Escanea y repara archivos del sistema corruptos.
+- sfc /scannow
+### Repara imagen de Windows sin reinstalar.
+- dism /online /cleanup-image /restorehealth
+### Repara errores en el disco duro.
+- chkdsk /f /r
+### Limpia papelera de reciclaje a nivel de sistema.
+- rd /s /q C:$Recycle.bin
+### Borra caché DNS para mejorar navegación/red.
+- ipconfig /flushdns
+### Restaura el stack de red, útil para problemas de conexión.
+- netsh winsock reset
 # PowerShell como Administrador
 ### Desactiva efectos visuales (animaciones)
 - Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\VisualEffects" -Name "VisualFXSetting" -Value 2
