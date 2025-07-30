@@ -47,10 +47,21 @@
 - powercfg -duplicatescheme e9a42b02-d5df-448d-aa00-03f14749eb61
 - hay que seleccionarlo manualmente
 ## Para ram 
-- Remove-Item "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue; [System.GC]::Collect(); [System.GC]::WaitForPendingFinalizers(); [System.GC]::Collect()
-## repita cada 2 horas
-- Guarda este comando en un script: C:\Scripts\limpiar.ps1 
-- ExecutionPolicy Bypass -File "C:\Scripts\limpiar.ps1"
+- while ($true) {
+-    $processes = Get-Process | Where-Object { $_.WorkingSet64 -gt 100MB }
+-   foreach ($p in $processes) {
+-        try {
+-            $handle = $p.Handle
+-            [PsAPI]::EmptyWorkingSet($handle) | Out-Null
+-            Write-Output "$(Get-Date): Liberado: $($p.ProcessName)"
+-        } catch {
+-            Write-Output "$(Get-Date): No se pudo liberar: $($p.ProcessName)"
+-        }
+-    }
+-
+-    Start-Sleep -Seconds 7200  # Esperar 2 horas
+- }
+
 # Powershell ADMIN (Solo cuando se tenga otro antiviruz)
 - Add-MpPreference -ExclusionPath "C:\Program Files\Windows Defender"
 - Add-MpPreference -ExclusionProcess "MsMpEng.exe"
