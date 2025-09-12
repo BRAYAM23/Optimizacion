@@ -67,3 +67,7 @@
 - Add-MpPreference -ExclusionProcess "MsMpEng.exe"
 - sc stop WinDefend
 
+# mirar slots de la ram 
+- wmic MemoryChip get BankLabel, DeviceLocator, Capacity
+
+
