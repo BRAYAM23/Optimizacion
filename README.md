@@ -70,4 +70,5 @@
 # mirar slots de la ram 
 - wmic MemoryChip get BankLabel, DeviceLocator, Capacity
 
-
+# mirar serial poweshell
+- wmic memorychip get Manufacturer, PartNumber, SerialNumber, Capacity
