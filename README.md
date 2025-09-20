@@ -72,3 +72,55 @@
 
 # mirar serial poweshell
 - wmic memorychip get Manufacturer, PartNumber, SerialNumber, Capacity
+
+- (Opcional) Instalar PHP
+sudo apt install php libapache2-mod-php -y
+sudo systemctl restart apache2
+# comprobar
+echo "<?php phpinfo(); ?>" | sudo tee /var/www/html/info.php
+# luego visitar http://IP_DEL_SERVIDOR/info.php
+
+Crear sitio web mínimo
+sudo mkdir -p /var/www/misitio
+sudo chown -R $USER:$USER /var/www/misitio
+sudo chmod -R 755 /var/www/misitio
+echo "<h1>Servidor Apache en Ubuntu</h1>" | sudo tee /var/www/misitio/index.html
+
+VirtualHost (archivo de configuración del sitio)
+
+Crea /etc/apache2/sites-available/misitio.conf con:
+
+<VirtualHost *:80>
+    ServerAdmin admin@misitio.com
+    DocumentRoot /var/www/misitio
+    ServerName misitio.com
+    ServerAlias www.misitio.com
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+
+Habilitar sitio y reiniciar:
+
+sudo a2ensite misitio.conf
+sudo systemctl restart apache2
+# si quieres deshabilitar el default:
+sudo a2dissite 000-default.conf
+sudo systemctl reload apache2
+
+Habilitar mod_rewrite (si hace falta)
+sudo a2enmod rewrite
+sudo systemctl restart apache2
+
+4) Firewall (UFW) — permitir Apache
+
+Verifica estado:
+
+sudo ufw status verbose
+
+
+Si UFW está activo, permite Apache:
+
+sudo ufw allow 'Apache Full'   # abre 80 y 443
+sudo ufw reload
+sudo ufw status
